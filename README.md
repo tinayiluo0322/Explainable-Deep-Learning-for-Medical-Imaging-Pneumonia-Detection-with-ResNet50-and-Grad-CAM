@@ -1,6 +1,6 @@
 # Explainable-Deep-Learning-for-Medical-Imaging-Pneumonia-Detection-with-ResNet50-and-Grad-CAM
 
-[Open this notebook in Google Colab]([https://colab.research.google.com/drive/your_notebook_id](https://colab.research.google.com/drive/1FkwzjsXCyjErTABgkphBFRoFzqV3j2SZ?usp=sharing))
+[Open this notebook in Google Colab](https://colab.research.google.com/drive/1FkwzjsXCyjErTABgkphBFRoFzqV3j2SZ?usp=sharing)
 
 # **Introduction**
 
