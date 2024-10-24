@@ -88,6 +88,133 @@ This experiment aims to combine the power of deep learning with transparency, ul
 - **Feature Importance Scores**: Create a plot comparing the feature importance scores between the two classes.
 - **Statistical Test Results**: Present the results of the statistical test, including the t-statistic and p-value.
 
+## Analysis of Model Performance (Tailored to ResNet50 Transfer Learning)
+
+### 1. Introduction
+This experiment evaluates the performance of a transfer learning-based model for classifying chest X-ray images into two categories: **Normal** and **Pneumonia**. Transfer learning was employed using a **pre-trained ResNet50 model**, which was fine-tuned for this specific task. The goal of the experiment was to leverage the powerful feature extraction capabilities of ResNet50 (pre-trained on ImageNet) while adapting it to the medical imaging domain, specifically for chest X-ray classification.
+
+ResNet50, known for its strong performance on general image classification tasks, was used as the backbone, and a fully connected layer was added on top for binary classification. The model’s performance was evaluated on a test set to assess its ability to distinguish between Pneumonia and Normal cases.
+
+### 2. Model and Experiment Setup
+- **Model Architecture**: ResNet50 (pre-trained on ImageNet) with the top layers removed, followed by a Global Average Pooling layer and a dense layer for binary classification.
+- **Transfer Learning**: The base ResNet50 model was frozen, and only the top layers were fine-tuned on the chest X-ray dataset.
+- **Training Dataset**: Labeled chest X-ray images, split into Normal and Pneumonia classes, were used for training and validation.
+- **Batch Size**: 32
+- **Epochs**: 10
+
+The goal was to benefit from ResNet50’s strong pre-trained features and adapt those features to the domain of medical images, particularly for the detection of Pneumonia.
+
+### 3. Evaluation Results
+
+#### Model Accuracy and Loss:
+- **Test Accuracy**: 77.40%
+- **Test Loss**: 0.5110
+
+The model achieved an accuracy of **77.40%**, reflecting reasonable performance for this medical image classification task. However, further breakdown of class-specific performance indicates the model’s tendency to perform better on Pneumonia cases than on Normal cases.
+
+#### Classification Report:
+
+| Class      | Precision | Recall | F1-Score | Support |
+|------------|-----------|--------|----------|---------|
+| **Normal** | 0.36      | 0.29   | 0.32     | 234     |
+| **Pneumonia** | 0.62   | 0.68   | 0.65     | 390     |
+| **Overall Accuracy** |         |        | 0.54     | 624     |
+
+- **Precision**: Precision for the **Normal** class is low at 0.36, indicating a higher rate of false positives when the model predicts an image as Normal. The **Pneumonia** class performs better, with a precision of 0.62, suggesting that when the model predicts Pneumonia, it is correct 62% of the time.
+  
+- **Recall**: The model demonstrates good recall for the **Pneumonia** class (0.68), meaning it correctly identifies 68% of actual Pneumonia cases. However, the recall for **Normal** is notably lower (0.29), indicating that many Normal cases are misclassified as Pneumonia.
+
+- **F1-Score**: The **F1-score** for the Pneumonia class is reasonable at 0.65, but for Normal, it is low at 0.32, reflecting the model’s difficulty in handling this class.
+
+#### Class Imbalance:
+- The test set contains **390 Pneumonia cases** and **234 Normal cases**, showing a natural class imbalance, which is likely contributing to the model's poor performance on the Normal class.
+
+### 4. Transfer Learning Insights
+The use of **ResNet50** for transfer learning provided strong feature extraction capabilities for Pneumonia detection. The pre-trained ResNet50 layers captured essential features from the chest X-ray images, leading to a relatively high recall for the Pneumonia class. However, due to the imbalanced nature of the dataset and the possible domain gap between ImageNet images and medical X-rays, the model struggled with detecting Normal cases.
+
+### 5. Analysis of Results
+
+- **Strong Performance on Pneumonia**: The model performs well on Pneumonia cases, achieving a recall of 0.68 and an F1-score of 0.65. This shows that the pre-trained ResNet50 effectively extracted relevant features for Pneumonia detection.
+
+- **Challenges with Normal Class**: The low precision (0.36) and recall (0.29) for Normal cases indicate that the model misclassifies a significant number of Normal images as Pneumonia. This could be due to the dataset's imbalance or insufficient feature adaptation during fine-tuning.
+
+- **Discrepancy Between Accuracy and Class-wise Performance**: While the overall test accuracy is **77.40%**, the class-wise performance (with an F1-score of 0.54 for Normal and Pneumonia combined) reveals that the model is biased toward predicting Pneumonia, which skews the accuracy.
+
+### 7. Conclusion
+The use of transfer learning with ResNet50 yielded promising results, particularly for detecting Pneumonia in chest X-rays, with a test accuracy of **77.40%**. However, its performance on the Normal class is suboptimal, indicating a need for further refinement.
+
+## Analysis of Grad-CAM Visualization Results:
+
+1. **Focus on the Diaphragm (Red Area)**:
+   - The fact that the model is focusing heavily on the diaphragm, regardless of whether the X-ray shows a healthy lung or a lung affected by pneumonia, suggests that the model may be **misinterpreting the features relevant to the classification task**.
+   - The diaphragm is not typically a region of interest for diagnosing lung conditions like pneumonia. Pneumonia-related features are usually present in the lung parenchyma (the tissues of the lungs), where fluid buildup or inflammation can be detected. Therefore, the model’s focus on the diaphragm may indicate that it has not been sufficiently trained to recognize lung-specific features.
+   - **I was only doing transfer learning with ResNet50 by freezing the base model, which means the convolutional layers are all frozen during my transfer learning. This means the pre-trained ResNet50 can't correctly focus its attention on the right feature region.**
+
+2. **Attention on the Right Blank Area (Yellow Area)**:
+   - The attention given to the right blank area outside the body is a red flag. This area should have no diagnostic relevance, as it contains no anatomical structures.
+   - This could happen due to several reasons:
+     - **Model overfitting**: The model may have overfit to some irrelevant background patterns that are consistently present in the dataset (e.g., artifacts from X-ray machines, borders around the images).
+     - **Dataset artifact**: If some images in the dataset consistently have certain patterns or artifacts in this area (e.g., labels, markers, or machine artifacts), the model might incorrectly learn to associate these with the class labels.
+     - **Incorrect bounding of the lung region**: It’s possible that the lung area is not properly centered or highlighted in the dataset, leading the model to misinterpret the right blank area as a region of importance.
+
+3. **Less Focus on the Lung Area (Blue Area)**:
+   - The lungs, being the primary region of interest for detecting pneumonia, are receiving relatively less attention from the model (shown in blue).
+   - This suggests that the model is not effectively recognizing the key visual features in the lungs that differentiate healthy from pneumonia-affected lungs.
+   - This could be due to:
+     - **Lack of specific features learned for pneumonia**: The model may not have been trained well enough on pneumonia-specific features (e.g., fluid accumulation, consolidation) within the lung tissues.
+     - **Need for further fine-tuning**: Additional training with a more focused loss function or data augmentation to highlight lung areas might help the model pay more attention to relevant features in the lungs.
+
+### Conclusion:
+The Grad-CAM visualization shows that the model is not focusing on the most important diagnostic regions (the lungs) and is instead focusing on irrelevant areas like the diaphragm and blank spaces. **Since the convolutional layers were frozen during transfer learning with ResNet50, the pre-trained model cannot adapt its focus to the relevant regions, such as the lungs**. This suggests that the model may require further fine-tuning, improved preprocessing, and enhanced training to better understand and focus on the features relevant to distinguishing healthy lungs from pneumonia-affected lungs.
+
+## Interpretation of the Statistical Analysis
+
+#### 1. **Objective of the Analysis**:
+The goal of this analysis was to determine whether there is a **significant difference in the Grad-CAM feature importance scores** between images of healthy lungs and those with pneumonia when using a pre-trained ResNet50 model. Specifically, the feature importance scores represent how much the model focused on different regions of the image when making predictions.
+
+#### 2. **Summary Statistics**:
+- **Mean Feature Importance**:
+  - **Normal (Healthy)**: The average feature importance score for the normal (healthy) images is 0.215.
+  - **Pneumonia**: The average feature importance score for the pneumonia images is 0.242.
+  - This shows that, on average, the pre-trained ResNet50 Model places slightly more importance on regions in pneumonia images than in healthy images.
+  
+- **Standard Deviation**:
+  - The standard deviations for the normal (0.018) and pneumonia (0.020) classes indicate the variation in feature importance scores within each class. The pneumonia class shows slightly higher variability in feature importance across its images.
+
+- **Sample Size**:
+  - The analysis is based on 30 images for each class (healthy and pneumonia), which is a sufficient sample size for performing the t-test.
+
+#### 3. **T-Test Results**:
+- **T-Statistic**: The t-statistic is -5.3253. This value represents the standardized difference between the two sample means (healthy vs. pneumonia feature importance scores). A negative value means that the healthy class had lower feature importance on average compared to the pneumonia class.
+  
+- **P-Value**: The p-value is 0.0000, which is **much smaller than the significance level of 0.05**. This result indicates that the observed difference in feature importance between the healthy and pneumonia classes is highly unlikely to be due to random chance.
+
+#### 4. **Hypothesis Testing**:
+
+- **Null Hypothesis (H₀)**: 
+  There is no significant difference in the feature importance highlighted by Grad-CAM between pneumonia and healthy chest X-ray images when using a pre-trained ResNet50 model.
+  
+- **Alternative Hypothesis (H₁)**: 
+  There is a significant difference in the feature importance highlighted by Grad-CAM between pneumonia and healthy chest X-ray images when using a pre-trained ResNet50 model.
+
+- **Conclusion**:
+  - Since the **p-value (0.0000) is less than the significance level (0.05)**, we **reject the null hypothesis**. This means there is a **statistically significant difference** in how the pre-trained ResNet50 model highlights important regions between the healthy and pneumonia classes.
+  
+#### 5. **Effect Size (Cohen’s d)**:
+- **Cohen's d**: The calculated Cohen’s d is **1.3985**, which indicates a **large effect size**. 
+  - **Interpretation**: A large effect size means that the difference in feature importance scores between the two classes (healthy and pneumonia) is not only statistically significant but also substantial in magnitude.
+  - In practical terms, the model places a **much greater emphasis** on certain regions in pneumonia images compared to healthy images, which could suggest that the model is detecting stronger signals or abnormalities in pneumonia cases.
+
+#### 6. **Overall Interpretation**:
+- The statistical analysis reveals that the **model behaves significantly differently when interpreting healthy and pneumonia images**. The higher feature importance scores for pneumonia images suggest that the model is assigning greater importance to certain regions in pneumonia images, potentially indicating areas of inflammation or abnormalities that are not present in healthy lungs.
+  
+- The **large effect size** (Cohen’s d = 1.3985) further supports the practical relevance of this difference. This suggests that the model’s attention mechanism (as visualized by Grad-CAM) strongly differentiates between the two classes.
+
+- **Implication for Model Performance**: The model’s stronger focus on pneumonia regions might indicate that it is successfully identifying features associated with pneumonia (such as consolidation or opacities) that are not present in healthy lungs. However, the difference in focus areas, as mentioned in my earlier analysis (i.e., focus on the diaphragm and irrelevant regions), might suggest that the model is not entirely optimal yet, and further fine-tuning may be necessary to improve its interpretability and performance.
+
+### Conclusion:
+There is a **statistically significant** and **substantial difference** in how the pre-trained ResNet50 model uses image regions to make predictions for pneumonia and healthy images indicated by the Grad-CAM feature importance scores, with pneumonia images receiving higher feature importance scores. This suggests the model may be successfully identifying pneumonia-related features but may still require further refinement to focus on the most relevant areas for clinical decision-making.
+
 ## **Final Conclusion Report**
 
 #### 1. **Analysis of Model Performance (Tailored to ResNet50 Transfer Learning)**:
