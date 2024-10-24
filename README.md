@@ -124,6 +124,8 @@ The model achieved an accuracy of **77.40%**, reflecting reasonable performance 
 | **Pneumonia** | 0.62   | 0.68   | 0.65     | 390     |
 | **Overall Accuracy** |         |        | 0.54     | 624     |
 
+![precision and recall](https://github.com/user-attachments/assets/3becc98d-f5e5-4ced-b1eb-d8ae16e609d8)
+
 - **Precision**: Precision for the **Normal** class is low at 0.36, indicating a higher rate of false positives when the model predicts an image as Normal. The **Pneumonia** class performs better, with a precision of 0.62, suggesting that when the model predicts Pneumonia, it is correct 62% of the time.
   
 - **Recall**: The model demonstrates good recall for the **Pneumonia** class (0.68), meaning it correctly identifies 68% of actual Pneumonia cases. However, the recall for **Normal** is notably lower (0.29), indicating that many Normal cases are misclassified as Pneumonia.
@@ -132,6 +134,7 @@ The model achieved an accuracy of **77.40%**, reflecting reasonable performance 
 
 #### Class Imbalance:
 - The test set contains **390 Pneumonia cases** and **234 Normal cases**, showing a natural class imbalance, which is likely contributing to the model's poor performance on the Normal class.
+
 
 ### 4. Transfer Learning Insights
 The use of **ResNet50** for transfer learning provided strong feature extraction capabilities for Pneumonia detection. The pre-trained ResNet50 layers captured essential features from the chest X-ray images, leading to a relatively high recall for the Pneumonia class. However, due to the imbalanced nature of the dataset and the possible domain gap between ImageNet images and medical X-rays, the model struggled with detecting Normal cases.
