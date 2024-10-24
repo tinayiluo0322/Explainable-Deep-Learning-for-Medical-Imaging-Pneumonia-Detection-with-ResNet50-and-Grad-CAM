@@ -2,7 +2,7 @@
 
 [Open this notebook in Google Colab](https://colab.research.google.com/drive/1FkwzjsXCyjErTABgkphBFRoFzqV3j2SZ?usp=sharing)
 
-# **Introduction**
+## **Introduction**
 
 In recent years, deep learning models have demonstrated impressive performance in medical image classification tasks, providing significant benefits for early diagnosis and treatment decisions. However, their "black-box" nature often leaves healthcare professionals without clear insight into how these models make decisions, raising concerns about trust, safety, and interpretability. The purpose of this experiment is to explore the application of Explainable AI (XAI) techniques, specifically Gradient-weighted Class Activation Mapping (Grad-CAM), to uncover which regions of medical images are most influential in model predictions. By using Grad-CAM, we aim to provide visual explanations that can help bridge the gap between machine intelligence and human interpretability.
 
@@ -14,15 +14,15 @@ The impact of this experiment lies in its potential to improve the interpretabil
 
 This experiment aims to combine the power of deep learning with transparency, ultimately contributing to the safe and reliable adoption of AI systems in healthcare.
 
-# **Experiment Design**
+## **Experiment Design**
 
-## 1. Hypothesis:
+### 1. Hypothesis:
 - **Null Hypothesis (H0):** There is no significant difference in the feature importance highlighted by Grad-CAM between pneumonia and healthy chest X-ray images when using a pre-trained ResNet50 model.
 - **Alternative Hypothesis (H1):** There is a significant difference in the feature importance highlighted by Grad-CAM between pneumonia and healthy chest X-ray images when using a pre-trained ResNet50 model.
 
 ---
 
-## 2. Dataset:
+### 2. Dataset:
 - **Name:** Chest X-ray Images (Pneumonia)
 - **Classes:**
   - **Pneumonia:** Images labeled as pneumonia.
@@ -33,62 +33,62 @@ This experiment aims to combine the power of deep learning with transparency, ul
 
 ---
 
-## 3. Model:
+### 3. Model:
 - **Model Used:** Pre-trained ResNet50 from the ImageNet dataset.
   - Use the pre-trained version of ResNet50, leveraging transfer learning for pneumonia and healthy classification.
   
 ---
 
-## 4. XAI Method:
+### 4. XAI Method:
 - **Method:** Grad-CAM (Gradient-weighted Class Activation Mapping)
   - Grad-CAM will be used to generate heatmaps that highlight important regions in the chest X-rays that contribute to the classification decision (pneumonia vs. healthy).
   - The heatmaps will provide visual explanations of which regions in the images influence the model's predictions.
 
 ---
 
-## 5. Experiment:
+### 5. Experiment:
 
-### a. Data Preparation:
+#### a. Data Preparation:
 - Load the Chest X-ray Images (Pneumonia) dataset.
 - Randomly select **30 images** from each class (pneumonia and healthy).
 - Resize the images to **224x224** and normalize according to ResNet50's input requirements.
 
-### b. Model Inference & Grad-CAM Heatmap Generation:
+#### b. Model Inference & Grad-CAM Heatmap Generation:
 - Pass each image through the pre-trained ResNet50 model to get predictions for pneumonia and healthy images.
 - Use **Grad-CAM** to generate class-specific heatmaps for both pneumonia and healthy images.
 - **Store the heatmaps** for both classes.
 
-### c. Feature Importance Aggregation:
+#### c. Feature Importance Aggregation:
 - For each image, **average the Grad-CAM heatmap values** across the entire image to create an overall feature importance score.
 - This score will represent the importance of image regions for the model’s decision.
 
-### d. Collect Data for Each Class:
+#### d. Collect Data for Each Class:
 - Collect the **aggregated feature importance scores** for each image in the pneumonia class.
 - Collect the **aggregated feature importance scores** for each image in the healthy class.
 
 ---
 
-## 6. Statistical Testing:
+### 6. Statistical Testing:
 
-### a. Objective:
+#### a. Objective:
 - Compare the aggregated feature importance scores between the two classes (pneumonia and healthy) to see if there’s a significant difference in how the model highlights important regions for each class.
 
-### b. Statistical Test:
+#### b. Statistical Test:
 - Use a **t-test** to compare the means of the feature importance scores for the two groups (pneumonia vs. healthy).
 - The t-test will help determine whether the difference in feature importance between the two classes is statistically significant.
 
-### c. Threshold for Significance:
+#### c. Threshold for Significance:
 - Set a significance level (e.g., **p < 0.05**). If the p-value is below this threshold, reject the null hypothesis, indicating that there is a significant difference in feature importance between the two classes.
 
 ---
 
-## 7. Visualization & Reporting:
+### 7. Visualization & Reporting:
 
 - **Grad-CAM Heatmaps**: Visualize a few examples of the Grad-CAM heatmaps for both pneumonia and healthy images to show how the model focuses on different regions.
 - **Feature Importance Scores**: Create a plot comparing the feature importance scores between the two classes.
 - **Statistical Test Results**: Present the results of the statistical test, including the t-statistic and p-value.
 
-# **Final Conclusion Report**
+## **Final Conclusion Report**
 
 #### 1. **Analysis of Model Performance (Tailored to ResNet50 Transfer Learning)**:
 The first stage of this experiment evaluated the performance of a transfer learning-based model using **ResNet50**, which was pre-trained on ImageNet, to classify chest X-ray images into two categories: **Normal** and **Pneumonia**. The model was adapted for this medical task by freezing the base (convolutional) layers and fine-tuning only the top layers for binary classification.
