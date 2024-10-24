@@ -134,7 +134,8 @@ The model achieved an accuracy of **77.40%**, reflecting reasonable performance 
 
 #### Class Imbalance:
 - The test set contains **390 Pneumonia cases** and **234 Normal cases**, showing a natural class imbalance, which is likely contributing to the model's poor performance on the Normal class.
-
+  
+![class imbalance](https://github.com/user-attachments/assets/b61103dd-0887-4fb7-ad0f-60515d9e5e49)
 
 ### 4. Transfer Learning Insights
 The use of **ResNet50** for transfer learning provided strong feature extraction capabilities for Pneumonia detection. The pre-trained ResNet50 layers captured essential features from the chest X-ray images, leading to a relatively high recall for the Pneumonia class. However, due to the imbalanced nature of the dataset and the possible domain gap between ImageNet images and medical X-rays, the model struggled with detecting Normal cases.
