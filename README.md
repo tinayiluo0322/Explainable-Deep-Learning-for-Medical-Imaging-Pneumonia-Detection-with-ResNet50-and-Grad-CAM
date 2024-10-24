@@ -14,6 +14,10 @@ The impact of this experiment lies in its potential to improve the interpretabil
 
 This experiment aims to combine the power of deep learning with transparency, ultimately contributing to the safe and reliable adoption of AI systems in healthcare.
 
+![Normal](https://github.com/user-attachments/assets/ada0be67-27ac-47f8-8b1d-cfb6c4e590e2)
+
+![Pheumonia](https://github.com/user-attachments/assets/322694a6-02bd-4bd1-a8d9-11badda5e6a3)
+
 ## **Experiment Design**
 
 ### 1. Hypothesis:
@@ -145,6 +149,10 @@ The use of transfer learning with ResNet50 yielded promising results, particular
 
 ## Analysis of Grad-CAM Visualization Results:
 
+<img width="1129" alt="Screen Shot 2024-10-23 at 11 56 42 PM" src="https://github.com/user-attachments/assets/d2f9c139-73be-445b-aa91-c1811ed5f424">
+
+<img width="1136" alt="Screen Shot 2024-10-23 at 11 58 42 PM" src="https://github.com/user-attachments/assets/1de61a49-e57e-409c-9e70-9382bea09fbd">
+
 1. **Focus on the Diaphragm (Red Area)**:
    - The fact that the model is focusing heavily on the diaphragm, regardless of whether the X-ray shows a healthy lung or a lung affected by pneumonia, suggests that the model may be **misinterpreting the features relevant to the classification task**.
    - The diaphragm is not typically a region of interest for diagnosing lung conditions like pneumonia. Pneumonia-related features are usually present in the lung parenchyma (the tissues of the lungs), where fluid buildup or inflammation can be detected. Therefore, the model’s focus on the diaphragm may indicate that it has not been sufficiently trained to recognize lung-specific features.
@@ -168,6 +176,32 @@ The use of transfer learning with ResNet50 yielded promising results, particular
 The Grad-CAM visualization shows that the model is not focusing on the most important diagnostic regions (the lungs) and is instead focusing on irrelevant areas like the diaphragm and blank spaces. **Since the convolutional layers were frozen during transfer learning with ResNet50, the pre-trained model cannot adapt its focus to the relevant regions, such as the lungs**. This suggests that the model may require further fine-tuning, improved preprocessing, and enhanced training to better understand and focus on the features relevant to distinguishing healthy lungs from pneumonia-affected lungs.
 
 ## Interpretation of the Statistical Analysis
+
+![stats_result](https://github.com/user-attachments/assets/b8d11117-f340-44bc-835c-6d909aaacfc8)
+
+Feature Importance Analysis Results
+==================================================
+
+Summary Statistics:
+            Metric    Normal  Pneumonia
+              Mean  0.215205   0.242184
+Standard Deviation  0.018152   0.020368
+       Sample Size 30.000000  30.000000
+
+Statistical Test Results:
+T-statistic: -5.3253
+P-value: 0.0000
+
+Null Hypothesis: No significant difference in feature importance between classes
+Alternative Hypothesis: Significant difference in feature importance between classes
+Significance level (α): 0.05
+
+Result: Reject the null hypothesis (p-value = 0.0000 < 0.05)
+There is a statistically significant difference in feature importance between normal and pneumonia classes.
+
+Effect Size:
+Cohen's d: 1.3985
+Effect size interpretation: large
 
 #### 1. **Objective of the Analysis**:
 The goal of this analysis was to determine whether there is a **significant difference in the Grad-CAM feature importance scores** between images of healthy lungs and those with pneumonia when using a pre-trained ResNet50 model. Specifically, the feature importance scores represent how much the model focused on different regions of the image when making predictions.
