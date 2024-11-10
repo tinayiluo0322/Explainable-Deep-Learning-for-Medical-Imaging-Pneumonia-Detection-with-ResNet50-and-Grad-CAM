@@ -8,7 +8,7 @@ In recent years, deep learning models have demonstrated impressive performance i
 
 The dataset used in this experiment, titled [**Labeled Optical Coherence Tomography (OCT) and Chest X-Ray Images for Classification**](https://data.mendeley.com/datasets/rscbjbr9sj/2) , contains labeled chest X-ray images for binary classification between healthy and pneumonia-affected individuals. The ability to detect pneumonia accurately from chest X-rays is crucial in clinical settings, especially for early detection and timely intervention.
 
-The pre-trained **ResNet50** model after transfer learning will be utilized to classify these images, and Grad-CAM will be employed to generate heatmaps that highlight the regions within the X-rays most relevant to the model’s classification decision. The experiment will focus on comparing the feature importance scores between healthy and pneumonia images to determine whether there is a significant difference in the regions highlighted by the model for each class.
+The pre-trained **ResNet50** model after transfer learning will be utilized to classify these images, and **Grad-CAM** will be employed to generate heatmaps that highlight the regions within the X-rays most relevant to the model’s classification decision. The experiment will focus on comparing the feature importance scores between healthy and pneumonia images to determine whether there is a significant difference in the regions highlighted by the model for each class.
 
 The impact of this experiment lies in its potential to improve the interpretability of deep learning models used in medical image analysis. By identifying which areas of the image are most relevant to the model’s predictions, healthcare professionals can gain a deeper understanding of model decisions, increasing trust and enabling more informed clinical decision-making. Additionally, this approach may help identify any biases in model attention, ensuring that the models are focusing on clinically relevant features, such as lung regions, rather than irrelevant areas.
 
@@ -17,6 +17,16 @@ This experiment aims to combine the power of deep learning with transparency, ul
 ![Normal](https://github.com/user-attachments/assets/ada0be67-27ac-47f8-8b1d-cfb6c4e590e2)
 
 ![Pheumonia](https://github.com/user-attachments/assets/322694a6-02bd-4bd1-a8d9-11badda5e6a3)
+
+## **Introduction to Grad-Cam**
+
+### What Is Grad-CAM, and Why Does It Matter?
+
+Imagine using an AI model to detect pneumonia in chest X-rays, and it tells you, “This X-ray shows pneumonia.” But how did it come to that conclusion? Did it look at the right part of the image? Grad-CAM helps answer these questions by showing which regions of an image the model focused on when making a decision.
+
+In simpler terms, Grad-CAM acts like a flashlight that highlights the areas in an image that the model considers important for classification. It achieves this by analyzing the gradient of the classification score in relation to the feature maps of the last convolutional layer in the neural network. This allows Grad-CAM to create a heatmap overlay on the image, where warmer colors (e.g., red and yellow) indicate areas of higher importance, and cooler colors (e.g., blue) represent areas of lower importance.
+
+
 
 ## **Experiment Design**
 
