@@ -26,7 +26,7 @@ Imagine using an AI model to detect pneumonia in chest X-rays, and it tells you,
 
 In simpler terms, Grad-CAM acts like a flashlight that highlights the areas in an image that the model considers important for classification. It achieves this by analyzing the gradient of the classification score in relation to the feature maps of the last convolutional layer in the neural network. This allows Grad-CAM to create a heatmap overlay on the image, where warmer colors (e.g., red and yellow) indicate areas of higher importance, and cooler colors (e.g., blue) represent areas of lower importance.
 
-
+<img width="519" alt="Screen Shot 2024-11-10 at 3 18 49 PM" src="https://github.com/user-attachments/assets/408107ea-87f3-47dd-beec-f6c202975cb0">
 
 ## **Experiment Design**
 
