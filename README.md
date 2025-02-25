@@ -30,6 +30,8 @@ In simpler terms, Grad-CAM acts like a flashlight that highlights the areas in a
 
 ## **Experiment Design**
 
+<img width="606" alt="Image" src="https://github.com/user-attachments/assets/2360ffd6-7644-4f42-8309-ab2837edb519" />
+
 ### 1. Hypothesis:
 - **Null Hypothesis (H0):** There is no significant difference in the feature importance highlighted by Grad-CAM between pneumonia and healthy chest X-ray images when using a pre-trained ResNet50 model.
 - **Alternative Hypothesis (H1):** There is a significant difference in the feature importance highlighted by Grad-CAM between pneumonia and healthy chest X-ray images when using a pre-trained ResNet50 model.
